@@ -33,7 +33,7 @@ Projeto Java com todos os requisitos solicitados no desafio da Projedata.
 ## Como executar
 
 ```bash
-cd /home/franklinclf/IdeaProjects/Iniflex
+cd /caminho/para/raiz/projeto
 ./gradlew test
 ./gradlew run
 ```
