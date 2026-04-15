@@ -1,25 +1,18 @@
 package br.com.projedata.dados;
 
 import br.com.projedata.modelos.Funcionario;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class BancoFuncionarios {
 
-    @Getter
-    private static final ArrayList<Funcionario> funcionarios = new ArrayList<>();
+    private final List<Funcionario> funcionarios = new ArrayList<>();
 
-    @Getter
-    private static final BancoFuncionarios instancia = new BancoFuncionarios();
-
-    private BancoFuncionarios() {
+    public BancoFuncionarios() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         funcionarios.add(Funcionario.builder()
@@ -93,20 +86,7 @@ public class BancoFuncionarios {
                 .build());
     }
 
-    public ArrayList<Funcionario> getAll() {
+    public List<Funcionario> getAll() {
         return new ArrayList<>(funcionarios);
-    }
-
-    public Optional<Funcionario> getFuncionarioByName(String nome) {
-        return funcionarios.stream()
-                .filter(funcionario -> funcionario.getNome().equalsIgnoreCase(nome))
-                .findFirst();
-    }
-
-    public ArrayList<Funcionario> getFuncionarios(String funcao) {
-        return funcionarios.stream()
-                .filter(funcionario -> funcionario.getFuncao().toLowerCase(Locale.ROOT)
-                        .equals(funcao.toLowerCase(Locale.ROOT)))
-                .collect(Collectors.toCollection(ArrayList::new));
     }
 }

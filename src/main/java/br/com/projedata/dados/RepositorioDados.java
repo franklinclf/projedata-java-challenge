@@ -1,21 +1,18 @@
 package br.com.projedata.dados;
-
-
 import br.com.projedata.modelos.Funcionario;
-import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
-public class RepositorioDados {
+public class RepositorioDados implements FuncionarioRepository {
 
-    @Getter
-    private static final RepositorioDados instancia = new RepositorioDados();
-    private final BancoFuncionarios funcionarios = BancoFuncionarios.getInstancia();
+    private final BancoFuncionarios funcionarios;
 
-    private RepositorioDados() {}
+    public RepositorioDados(BancoFuncionarios funcionarios) {
+        this.funcionarios = funcionarios;
+    }
 
-    public ArrayList<Funcionario> getFuncionarios() {
+    @Override
+    public List<Funcionario> getFuncionarios() {
         return funcionarios.getAll();
     }
 }

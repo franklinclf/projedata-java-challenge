@@ -1,5 +1,6 @@
 package br.com.projedata.servicos;
 
+import br.com.projedata.dados.FuncionarioRepository;
 import br.com.projedata.modelos.Funcionario;
 
 import java.math.BigDecimal;
@@ -7,7 +8,6 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,8 +20,8 @@ public class ProcessoSeletivoService {
 
     private final List<Funcionario> funcionarios;
 
-    public ProcessoSeletivoService(Collection<Funcionario> funcionariosIniciais) {
-        this.funcionarios = funcionariosIniciais.stream()
+    public ProcessoSeletivoService(FuncionarioRepository repositorio) {
+        this.funcionarios = repositorio.getFuncionarios().stream()
                 .map(this::clonarFuncionario)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
@@ -57,7 +57,7 @@ public class ProcessoSeletivoService {
         return funcionarios.stream()
                 .min(Comparator.comparing(Funcionario::getDataNascimento))
                 .map(funcionario -> new FuncionarioComIdade(
-                        funcionario,
+                        funcionario.getNome(),
                         Period.between(funcionario.getDataNascimento(), dataReferencia).getYears()));
     }
 
@@ -87,22 +87,6 @@ public class ProcessoSeletivoService {
         return funcionario.toBuilder().build();
     }
 
-    public static class FuncionarioComIdade {
-        private final Funcionario funcionario;
-        private final int idade;
-
-        public FuncionarioComIdade(Funcionario funcionario, int idade) {
-            this.funcionario = funcionario;
-            this.idade = idade;
-        }
-
-        public Funcionario getFuncionario() {
-            return funcionario;
-        }
-
-        public int getIdade() {
-            return idade;
-        }
-    }
+    public record FuncionarioComIdade(String nome, int idade) {}
 }
 

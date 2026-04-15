@@ -1,5 +1,7 @@
 package br.com.projedata;
 
+import br.com.projedata.dados.BancoFuncionarios;
+import br.com.projedata.dados.FuncionarioRepository;
 import br.com.projedata.dados.RepositorioDados;
 import br.com.projedata.modelos.Funcionario;
 import br.com.projedata.servicos.ProcessoSeletivoService;
@@ -14,8 +16,9 @@ import java.util.Set;
 public class Principal {
 
     public static void main(String[] args) {
-        RepositorioDados repositorio = RepositorioDados.getInstancia();
-        ProcessoSeletivoService processo = new ProcessoSeletivoService(repositorio.getFuncionarios());
+        BancoFuncionarios banco = new BancoFuncionarios();
+        FuncionarioRepository repositorio = new RepositorioDados(banco);
+        ProcessoSeletivoService processo = new ProcessoSeletivoService(repositorio);
 
         processo.removerFuncionarioPorNome("Joao");
         processo.removerFuncionarioPorNome("João");
@@ -40,8 +43,8 @@ public class Principal {
 
         processo.obterFuncionarioMaisVelho(LocalDate.now()).ifPresent(maisVelho ->
                 System.out.println("3.9 - Funcionario mais velho: "
-                        + maisVelho.getFuncionario().getNome()
-                        + " | Idade: " + maisVelho.getIdade()));
+                        + maisVelho.nome()
+                        + " | Idade: " + maisVelho.idade()));
 
         imprimirSecao("3.10 - Funcionarios em ordem alfabetica");
         imprimirFuncionarios(processo.listarFuncionariosPorNome());

@@ -1,5 +1,7 @@
 package br.com.projedata.servicos;
 
+import br.com.projedata.dados.BancoFuncionarios;
+import br.com.projedata.dados.FuncionarioRepository;
 import br.com.projedata.dados.RepositorioDados;
 import br.com.projedata.modelos.Funcionario;
 import br.com.projedata.util.FormatadorSaida;
@@ -20,7 +22,8 @@ class ProcessoSeletivoServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = new ProcessoSeletivoService(RepositorioDados.getInstancia().getFuncionarios());
+        FuncionarioRepository repositorio = new RepositorioDados(new BancoFuncionarios());
+        service = new ProcessoSeletivoService(repositorio);
         service.removerFuncionarioPorNome("Joao");
         service.removerFuncionarioPorNome("João");
     }
@@ -69,8 +72,8 @@ class ProcessoSeletivoServiceTest {
                 .obterFuncionarioMaisVelho(LocalDate.of(2026, 4, 15))
                 .orElseThrow();
 
-        assertEquals("Caio", maisVelho.getFuncionario().getNome());
-        assertEquals(64, maisVelho.getIdade());
+        assertEquals("Caio", maisVelho.nome());
+        assertEquals(64, maisVelho.idade());
     }
 
     @Test
